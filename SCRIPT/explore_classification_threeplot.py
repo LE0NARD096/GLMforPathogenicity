@@ -115,10 +115,10 @@ def process_variants(variants, seq_id, gene_start, gene_end, accession_set=None)
     return df
 
 def main():
-    reference_gene_file = '/NFSHOME/lmasci/DNABERT_2/DATA/BRCA1_WT.fasta'    # Update with your file path
-    variant_info_file = '/NFSHOME/lmasci/DNABERT_2/DATA/filtered_variants_BRCA1.txt'          # Update with your file path
-    accession_list_file_incorrect = '/NFSHOME/lmasci/DNABERT_2/DATA/accession_code_misclassified.txt'      # Update with your file path
-    accession_list_file_correct = '/NFSHOME/lmasci/DNABERT_2/DATA/accession_code_correctly.txt'  # Update with your file path
+    reference_gene_file = 'path_to/BRCA1_WT.fasta'    # Update with your file path
+    variant_info_file = 'path_to/filtered_variants_BRCA1.txt'          # Update with your file path
+    accession_list_file_incorrect = 'output_path/accession_code_misclassified.txt'      # Update with your file path
+    accession_list_file_correct = 'output_path/accession_code_correctly.txt'  # Update with your file path
 
     # Read reference gene
     seq_id, gene_start, gene_end, gene_seq = read_reference_gene(reference_gene_file)
@@ -138,14 +138,6 @@ def main():
 
     # Process correctly classified variants
     df_correct = process_variants(variants, seq_id, gene_start, gene_end, correct_accession_set)
-
-    # Display the datasets
-    #print("All Variants:")
-    #print(df_all)
-    #print("\nIncorrectly Classified Variants:")
-    #print(df_incorrect)
-    #print("\nCorrectly Classified Variants:")
-    #print(df_correct)
 
     # Check if DataFrames are empty
     if df_all.empty:

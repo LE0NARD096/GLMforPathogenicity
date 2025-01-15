@@ -14,4 +14,4 @@ export VECLIB_MAXIMUM_THREADS=${SLURM_CPUS_PER_TASK}
 export NUMEXPR_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 
 #srun python test_finetunedmodel.py
-srun python test_finetunedmodel_single.py
+srun python test_finetunedmodel_singleseq.py

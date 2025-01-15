@@ -4,12 +4,12 @@ from torch.nn import functional as F
 import csv
 
 # Load the fine-tuned model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained("/NFSHOME/lmasci/DNABERT_2/finetune/output/BRCA_TOTAL", trust_remote_code=True)
-model = AutoModelForSequenceClassification.from_pretrained("/NFSHOME/lmasci/DNABERT_2/finetune/output/BRCA_TOTAL", trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained("path_to_model_folder", trust_remote_code=True)
+model = AutoModelForSequenceClassification.from_pretrained("path_to_model_folder", trust_remote_code=True)
 
 # Load the dataset (assuming a CSV file with a 'sequence' column)
-input_file = '/NFSHOME/lmasci/DNABERT_2/DATA/uncertain_sequences.csv'  # Update this path
-output_file = '/NFSHOME/lmasci/DNABERT_2/DATA/labeled_uncertain_sequences.csv'         # Update this path
+input_file = 'path_to_input'  # Update this path
+output_file = 'path_to_output'         # Update this path
 
 # Read sequences from the input CSV file
 dataset = []

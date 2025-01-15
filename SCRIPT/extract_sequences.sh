@@ -1,11 +1,14 @@
 #!/bin/bash
 
 # Input and output files
-INPUT_FILE="filtered_variants_BRCA2.txt"
-SEQUENCE_OUTPUT="mutated_sequences_BRCA2.fasta"
+INPUT_FILE="path_to/filtered_variants_BRCA2.txt"
+SEQUENCE_OUTPUT="path_to/mutated_sequences_BRCA2_500bp.fasta"
 
 # Remove any existing output file
 rm -f "$SEQUENCE_OUTPUT"
+
+# Set maximum sequence length
+MAX_LENGTH=500
 
 # Loop through each line in the input file, skipping the header
 tail -n +2 "$INPUT_FILE" | while read -r line; do
@@ -55,21 +58,18 @@ tail -n +2 "$INPUT_FILE" | while read -r line; do
     ref_length=${#ref}
     alt_length=${#alt}
 
-    # Calculate the change in length
-    delta_length=$((alt_length - ref_length))
+    # Calculate the context length (excluding the mutation)
+    context_length=$(( MAX_LENGTH - alt_length ))
 
-    # Calculate the desired fetched sequence length
-    fetched_seq_length=$((300 - delta_length))
-
-    # Ensure fetched_seq_length is at least 1
-    if [[ "$fetched_seq_length" -lt 1 ]]; then
-        echo "Error: Fetched sequence length is less than 1 for $accession" >&2
+    # Ensure context_length is at least 0
+    if [[ "$context_length" -lt 0 ]]; then
+        echo "Error: Context length is negative for $accession (alt_length: $alt_length). Skipping this entry." >&2
         continue
     fi
 
     # Calculate left and right context lengths
-    left_context_length=$(( (fetched_seq_length - ref_length) / 2 ))
-    right_context_length=$(( fetched_seq_length - ref_length - left_context_length ))
+    left_context_length=$(( context_length / 2 ))
+    right_context_length=$(( context_length - left_context_length ))
 
     # Calculate start and end positions
     start=$(( zero_based_pos - left_context_length ))
@@ -77,7 +77,11 @@ tail -n +2 "$INPUT_FILE" | while read -r line; do
 
     # Adjust start position to be at least 0
     if [[ "$start" -lt 0 ]]; then
+        # Adjust the right context length to compensate
+        left_adjustment=$(( 0 - start ))
         start=0
+        right_context_length=$(( right_context_length + left_adjustment ))
+        end=$(( zero_based_pos + ref_length + right_context_length - 1 ))
     fi
 
     # Fetch the reference sequence
@@ -118,10 +122,10 @@ tail -n +2 "$INPUT_FILE" | while read -r line; do
     # Apply mutation
     mutated_seq="${ref_seq:0:$mutation_pos}${alt}${ref_seq:$((mutation_pos + ref_length))}"
 
-    # Ensure the mutated sequence is 300 bp long
+    # Ensure the mutated sequence is MAX_LENGTH bp long
     mutated_seq_length=${#mutated_seq}
-    if [[ "$mutated_seq_length" -ne 300 ]]; then
-        echo "Error: Mutated sequence length is not 300 bp for $accession" >&2
+    if [[ "$mutated_seq_length" -ne "$MAX_LENGTH" ]]; then
+        echo "Error: Mutated sequence length is not $MAX_LENGTH bp for $accession (actual length: $mutated_seq_length)" >&2
         continue
     fi
 

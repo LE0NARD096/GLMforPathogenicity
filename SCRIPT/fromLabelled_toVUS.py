@@ -3,7 +3,7 @@ import csv
 # Read and parse the FASTA file
 sequence_to_header = {}
 
-with open('/NFSHOME/lmasci/DNABERT_2/DATA/mutated_sequences_BRCA2.fasta', 'r') as fasta_file:
+with open('path_to/mutated_sequences_BRCA1.fasta', 'r') as fasta_file:
     header = ''
     sequence_lines = []
     for line in fasta_file:
@@ -37,15 +37,14 @@ with open('/NFSHOME/lmasci/DNABERT_2/DATA/mutated_sequences_BRCA2.fasta', 'r') a
             'review_status': review_status
         }
 
-# Read and parse the CSV file
+# Read and parse the predictions CSV file (without 'true_label')
 sequence_data_list = []
 
-with open('/NFSHOME/lmasci/DNABERT_2/DATA/correct/TOT_BRCA2.csv', 'r') as csv_file:
+with open('path_to/labeled_uncertain_sequences.csv', 'r') as csv_file:
     reader = csv.DictReader(csv_file)
     for row in reader:
         # Extract fields
         sequence = row['sequence']
-        true_label = row['true_label']
         predicted_class = row['predicted_class']
         probability_scores_str = row['probability_scores']
         # Parse probability_scores string to get two values
@@ -59,7 +58,6 @@ with open('/NFSHOME/lmasci/DNABERT_2/DATA/correct/TOT_BRCA2.csv', 'r') as csv_fi
         # Store the data
         sequence_data_list.append({
             'sequence': sequence,
-            'true_label': true_label,
             'predicted_class': predicted_class,
             'probability_0': probability_0,
             'probability_1': probability_1
@@ -70,7 +68,7 @@ output_data = []
 
 for seq_data in sequence_data_list:
     sequence = seq_data['sequence']
-    # Check if sequence is in the first dataset
+    # Retrieve header information from the FASTA data
     header_info = sequence_to_header.get(sequence, {
         'accession_code': '',
         'pathogenicity': '',
@@ -79,7 +77,6 @@ for seq_data in sequence_data_list:
     # Prepare output row
     output_row = {
         'sequence': sequence,
-        'true_label': seq_data['true_label'],
         'predicted_class': seq_data['predicted_class'],
         'probability_0': seq_data['probability_0'],
         'probability_1': seq_data['probability_1'],
@@ -90,10 +87,10 @@ for seq_data in sequence_data_list:
     output_data.append(output_row)
 
 # Write the output to a CSV file
-output_columns = ['sequence', 'true_label', 'predicted_class', 'probability_0', 'probability_1',
+output_columns = ['sequence', 'predicted_class', 'probability_0', 'probability_1',
                   'accession_code', 'pathogenicity', 'review_status']
 
-with open('/NFSHOME/lmasci/DNABERT_2/DATA/correct/reverse_TOT_BRCA2.csv', 'w', newline='') as csvfile:
+with open('path_to/output_uncertain_BRCA1.csv', 'w', newline='') as csvfile:
     writer = csv.DictWriter(csvfile, fieldnames=output_columns)
     writer.writeheader()
     for row in output_data:

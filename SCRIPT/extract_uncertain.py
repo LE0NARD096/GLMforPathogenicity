@@ -2,7 +2,7 @@ import csv
 import re
 
 # Input and output file paths
-input_file = "mutated_sequences(SECOND).fasta"  # Replace with your FASTA filename
+input_file = "mutated_sequences.fasta"  # Replace with your FASTA filename
 output_file = "uncertain_sequences.txt"
 
 # Initialize variables

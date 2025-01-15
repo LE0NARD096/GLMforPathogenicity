@@ -1,8 +1,8 @@
 import pandas as pd
 
 # Input and output file paths
-input_file = '/NFSHOME/lmasci/DNABERT_2/DATA/labeled_sequences_BRCA1.csv'
-output_file = '/NFSHOME/lmasci/DNABERT_2/DATA/labeled_100bp_BRCA1.csv'
+input_file = 'path_to/labeled_sequences_BRCA1.csv'
+output_file = 'path_to/labeled_100bp_BRCA1.csv'
 
 # Set the desired chunk size (e.g., 100 base pairs)
 chunk_size = 100

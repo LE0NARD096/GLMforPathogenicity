@@ -1,7 +1,7 @@
 import pandas as pd
 
 # Define a function to split the sequence into 300bp chunks with 150bp overlaps
-def split_sequence(sequence, window_size=500, overlap=400):
+def split_sequence(sequence, window_size=500, overlap=150):
     chunks = []
     for i in range(0, len(sequence) - window_size + 1, window_size - overlap):
         chunk = sequence[i:i + window_size]
@@ -11,7 +11,7 @@ def split_sequence(sequence, window_size=500, overlap=400):
 # Main code to split the BRCA1 sequence and append the label
 def main():
     # Read the BRCA1 sequence from a file (after fetching with efetch)
-    with open('/NFSHOME/lmasci/DNABERT_2/DATA/BRCA1_WT.fasta', 'r') as f:
+    with open('path_to/BRCA1_WT.fasta', 'r') as f:
         brca1_sequence = ''.join([line.strip() for line in f.readlines() if not line.startswith('>')])
 
     # Split the sequence into chunks of 300bp with 150bp overlap
@@ -26,7 +26,7 @@ def main():
     df = pd.DataFrame(data)
 
     # Save to CSV
-    df.to_csv('/NFSHOME/lmasci/DNABERT_2/DATA/brca1_wild_sequences.csv', index=False)
+    df.to_csv('path_output/brca1_wild_sequences.csv', index=False)
 
     print("Sequences saved to _ .csv")
 

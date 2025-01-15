@@ -1,8 +1,8 @@
 import csv
 
 # Input and output file paths
-input_file = "/NFSHOME/lmasci/DNABERT_2/DATA/mutated_sequences_BRCA2_500bp.fasta"
-output_file = "/NFSHOME/lmasci/DNABERT_2/DATA/labeled_sequences_BRCA2_500bp.csv"
+input_file = "path_to/mutated_sequences_BRCA2_500bp.fasta"
+output_file = "path_to/labeled_sequences_BRCA2_500bp.csv"
 
 # Initialize variables
 sequences = []

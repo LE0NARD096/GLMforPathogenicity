@@ -4,12 +4,12 @@ from torch.nn import functional as F
 import csv
 
 # Load the fine-tuned model and tokenizer
-tokenizer = AutoTokenizer.from_pretrained("/NFSHOME/lmasci/DNABERT_2/finetune/output/BRCATOT_TEST", trust_remote_code=True)
-model = AutoModelForSequenceClassification.from_pretrained("/NFSHOME/lmasci/DNABERT_2/finetune/output/BRCATOT_TEST", trust_remote_code=True)
+tokenizer = AutoTokenizer.from_pretrained("path_to_model_folder", trust_remote_code=True)
+model = AutoModelForSequenceClassification.from_pretrained("path_to_model_folder", trust_remote_code=True)
 
 # Load the dataset manually (assuming a CSV file with 'sequence' and 'label' columns)
 dataset = []
-with open('/NFSHOME/lmasci/DNABERT_2/DATA/syntheticData_BRCA2.csv', 'r') as csvfile:
+with open('path_to_labelled_csv', 'r') as csvfile:
     reader = csv.DictReader(csvfile)
     for i, row in enumerate(reader):
         if i >= 15000:  # Limit to 100 rows
@@ -61,7 +61,7 @@ for i, dna_sequence in enumerate(dna_sequences):
         incorrectly_labeled.append(output_entry)
 
 # Write correctly labeled sequences to a CSV file
-with open('/NFSHOME/lmasci/DNABERT_2/DATA/correct/TOT_BRCA2.csv', 'w', newline='') as csvfile:
+with open('path_to_csv_correct', 'w', newline='') as csvfile:
     fieldnames = ['index', 'sequence', 'true_label', 'predicted_class', 'probability_scores']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()
@@ -69,7 +69,7 @@ with open('/NFSHOME/lmasci/DNABERT_2/DATA/correct/TOT_BRCA2.csv', 'w', newline='
         writer.writerow(row)
 
 # Write incorrectly labeled sequences to a CSV file
-with open('/NFSHOME/lmasci/DNABERT_2/DATA/incorrect/TOT_BRCA2.csv', 'w', newline='') as csvfile:
+with open('path_to_csv_incorrect', 'w', newline='') as csvfile:
     fieldnames = ['index', 'sequence', 'true_label', 'predicted_class', 'probability_scores']
     writer = csv.DictWriter(csvfile, fieldnames=fieldnames)
     writer.writeheader()

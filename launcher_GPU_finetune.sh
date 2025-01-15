@@ -14,14 +14,14 @@ export VECLIB_MAXIMUM_THREADS=${SLURM_CPUS_PER_TASK}
 export NUMEXPR_NUM_THREADS=${SLURM_CPUS_PER_TASK}
 
 # Variablesokmijnuhb987654321
-data_path="/NFSHOME/lmasci/DNABERT_2/sample_BRCATOT_500bp"  
+data_path="path_to_sample_datafolder"  
 lr=0.00001
 
 #            --eval_steps 200 \
 #            --save_steps 200 \
 #           loadbestmodel added
 
-srun python /NFSHOME/lmasci/DNABERT_2/finetune/train_running.py \
+srun python /train.py \
             --model_name_or_path zhihan1996/DNABERT-2-117M \
             --data_path ${data_path} \
             --kmer -1 \
@@ -31,7 +31,7 @@ srun python /NFSHOME/lmasci/DNABERT_2/finetune/train_running.py \
             --gradient_accumulation_steps 1 \
             --learning_rate ${lr} \
             --num_train_epochs 5 \
-            --output_dir /NFSHOME/lmasci/DNABERT_2/finetune/output/BRCATOT_500bp_lr1 \
+            --output_dir /outputdir \
             --evaluation_strategy steps \
             --warmup_steps 50 \
             --eval_steps 200 \

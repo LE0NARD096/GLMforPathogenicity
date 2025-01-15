@@ -55,8 +55,8 @@ def determine_mutation_type(deleted_seq, inserted_seq):
         return 'Indel'  # All other cases, including substitutions of length > 1
 
 def main():
-    variant_info_file = '/NFSHOME/lmasci/DNABERT_2/DATA/filtered_variants_BRCA2_USED.txt'  # Update with your file path
-    accession_list_file = '/NFSHOME/lmasci/DNABERT_2/accession_code_misclassified_BRCA2.txt'         # Update with your file path
+    variant_info_file = 'path_to/filtered_variants_BRCA2.txt'  # Update with your file path
+    accession_list_file = 'path_to/accession_code_misclassified_BRCA2.txt'         # Update with your file path
 
     # Read variant information
     variants = read_variant_info(variant_info_file)
